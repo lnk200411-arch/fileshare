@@ -2,6 +2,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import Skeleton from '@mui/material/Skeleton';
 import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
@@ -90,16 +91,33 @@ function FilePageLayout({
       {topSlot && <Box sx={{ mb: 3 }}>{topSlot}</Box>}
 
       {/* 정렬·필터·뷰 전환 */}
-      <Box sx={{ mb: 2 }}>
-        <SortFilter
-          viewMode={viewMode}
-          sortBy={sortBy}
-          filterType={filterType}
-          totalCount={files.length}
-          onViewModeChange={onViewModeChange}
-          onSortChange={onSortChange}
-          onFilterChange={onFilterChange}
-        />
+      <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
+        {files.length > 0 && (
+          <FormControlLabel
+            control={
+              <Checkbox
+                size='small'
+                checked={allSelected}
+                indeterminate={someSelected}
+                onChange={(e) => onSelectAll?.(e.target.checked)}
+                sx={{ py: 0.25 }}
+              />
+            }
+            label={<Typography sx={{ fontSize: '0.8125rem', color: '#475569', userSelect: 'none' }}>전체선택</Typography>}
+            sx={{ m: 0, mr: 0.5 }}
+          />
+        )}
+        <Box sx={{ flex: 1 }}>
+          <SortFilter
+            viewMode={viewMode}
+            sortBy={sortBy}
+            filterType={filterType}
+            totalCount={files.length}
+            onViewModeChange={onViewModeChange}
+            onSortChange={onSortChange}
+            onFilterChange={onFilterChange}
+          />
+        </Box>
       </Box>
 
       {/* 오류 */}
