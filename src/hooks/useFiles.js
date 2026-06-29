@@ -47,7 +47,7 @@ export function useFiles(opts = {}, refreshKey = 0, recentDownloads = false) {
 
   const handleDownload = useCallback(async (file) => {
     const url = getStoragePublicUrl(SUPABASE_URL, file.storage_path);
-    triggerDownload(url, file.file_name);
+    await triggerDownload(url, file.file_name);
     await recordDownload(file.id).catch(() => {});
     setFiles((prev) =>
       prev.map((f) => f.id === file.id ? { ...f, download_count: (f.download_count || 0) + 1 } : f)
