@@ -11,7 +11,6 @@ import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import SearchIcon from '@mui/icons-material/Search';
 import MenuIcon from '@mui/icons-material/Menu';
 import FolderIcon from '@mui/icons-material/Folder';
@@ -35,9 +34,12 @@ const NAV_ITEMS = [
  * Example usage:
  * <Header onUploadClick={handleUpload} onSearch={setSearchQuery} searchQuery={searchQuery} />
  */
-function Header({ onUploadClick, onSearch, searchQuery = '' }) {
+function Header({ onSearch, searchQuery = '' }) {
   const location = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [inputValue, setInputValue] = useState(searchQuery);
+
+  const handleSearch = () => onSearch(inputValue);
 
   return (
     <>
@@ -121,21 +123,22 @@ function Header({ onUploadClick, onSearch, searchQuery = '' }) {
             <SearchIcon sx={{ fontSize: 16, color: '#94A3B8', flexShrink: 0 }} />
             <InputBase
               placeholder='파일 검색...'
-              value={searchQuery}
-              onChange={(e) => onSearch(e.target.value)}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
               sx={{ flex: 1, fontSize: '0.8125rem', '& input': { padding: 0 } }}
             />
           </Box>
 
-          {/* 업로드 버튼 */}
+          {/* 검색 버튼 */}
           <Button
             variant='contained'
-            startIcon={<CloudUploadIcon sx={{ fontSize: '1rem !important' }} />}
-            onClick={onUploadClick}
+            startIcon={<SearchIcon sx={{ fontSize: '1rem !important' }} />}
+            onClick={handleSearch}
             size='small'
             sx={{ flexShrink: 0, px: { xs: 1.5, sm: 2 }, fontSize: '0.875rem' }}
           >
-            <Box component='span' sx={{ display: { xs: 'none', sm: 'inline' } }}>업로드</Box>
+            <Box component='span' sx={{ display: { xs: 'none', sm: 'inline' } }}>검색</Box>
           </Button>
         </Toolbar>
       </AppBar>
