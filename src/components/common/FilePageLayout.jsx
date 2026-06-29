@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Skeleton from '@mui/material/Skeleton';
 import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
-import { Download } from '@mui/icons-material';
+import { Download, DeleteOutlined } from '@mui/icons-material';
 import SortFilter from './SortFilter';
 import FileCard from './FileCard';
 import FileListItem from './FileListItem';
@@ -27,6 +27,8 @@ import FileListItem from './FileListItem';
  * @param {function} onDownload - 다운로드 핸들러 [Optional]
  * @param {function} onSelect - 선택 핸들러 [Optional]
  * @param {function} onDownloadSelected - 선택 다운로드 [Optional]
+ * @param {function} onDelete - 단일 삭제 핸들러 [Optional]
+ * @param {function} onDeleteSelected - 선택 삭제 핸들러 [Optional]
  * @param {React.ReactNode} topSlot - 상단 슬롯 (히어로 업로드 등) [Optional]
  *
  * Example usage:
@@ -47,6 +49,8 @@ function FilePageLayout({
   onDownload,
   onSelect,
   onDownloadSelected,
+  onDelete,
+  onDeleteSelected,
   topSlot,
 }) {
   return (
@@ -55,14 +59,25 @@ function FilePageLayout({
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
         <Typography variant='h1'>{title}</Typography>
         {selectedIds.size > 0 && (
-          <Button
-            variant='contained'
-            size='small'
-            startIcon={<Download sx={{ fontSize: '1rem !important' }} />}
-            onClick={onDownloadSelected}
-          >
-            {selectedIds.size}개 다운로드
-          </Button>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button
+              variant='contained'
+              size='small'
+              startIcon={<Download sx={{ fontSize: '1rem !important' }} />}
+              onClick={onDownloadSelected}
+            >
+              {selectedIds.size}개 다운로드
+            </Button>
+            <Button
+              variant='outlined'
+              size='small'
+              color='error'
+              startIcon={<DeleteOutlined sx={{ fontSize: '1rem !important' }} />}
+              onClick={onDeleteSelected}
+            >
+              {selectedIds.size}개 삭제
+            </Button>
+          </Box>
         )}
       </Box>
 
@@ -114,6 +129,7 @@ function FilePageLayout({
                 isSelected={selectedIds.has(file.id)}
                 onSelect={onSelect}
                 onDownload={onDownload}
+                onDelete={onDelete}
               />
             </Grid>
           ))}
@@ -141,6 +157,7 @@ function FilePageLayout({
               isSelected={selectedIds.has(file.id)}
               onSelect={onSelect}
               onDownload={onDownload}
+              onDelete={onDelete}
             />
           ))}
         </Box>

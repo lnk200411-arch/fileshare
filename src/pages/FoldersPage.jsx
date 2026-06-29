@@ -34,7 +34,7 @@ function FoldersPage({ refreshKey = 0 }) {
   const [internalRefresh, setInternalRefresh] = useState(0);
   const [viewMode, setViewMode] = useState('grid');
 
-  const { files, isLoading: filesLoading, error: filesError, handleDownload, selectedIds, toggleSelect, downloadSelected } = useFiles(
+  const { files, isLoading: filesLoading, error: filesError, handleDownload, handleDelete, selectedIds, toggleSelect, downloadSelected, deleteSelected } = useFiles(
     { folderId: currentFolderId },
     refreshKey + internalRefresh
   );
@@ -173,8 +173,10 @@ function FoldersPage({ refreshKey = 0 }) {
         selectedIds={selectedIds}
         onViewModeChange={setViewMode}
         onDownload={handleDownload}
+        onDelete={handleDelete}
         onSelect={toggleSelect}
         onDownloadSelected={downloadSelected}
+        onDeleteSelected={deleteSelected}
         topSlot={
           <HeroUpload onSuccess={() => setInternalRefresh((k) => k + 1)} />
         }

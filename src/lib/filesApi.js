@@ -102,3 +102,15 @@ export async function softDeleteFile(fileId) {
     .eq('id', fileId);
   if (error) throw error;
 }
+
+/**
+ * 파일 삭제 — DB soft delete + Storage 파일 제거
+ * @param {string} fileId
+ * @param {string} storagePath
+ */
+export async function deleteFile(fileId, storagePath) {
+  await softDeleteFile(fileId);
+  if (storagePath) {
+    await deleteStorageFile(storagePath).catch(() => {});
+  }
+}

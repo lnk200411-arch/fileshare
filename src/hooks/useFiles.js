@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { fetchFiles, fetchRecentDownloads, recordDownload } from '../lib/filesApi';
+import { fetchFiles, fetchRecentDownloads, recordDownload, deleteFile } from '../lib/filesApi';
 import { triggerBlobDownload, getFileType } from '../utils/fileUtils';
 import { downloadFileAsBlob } from '../lib/storageApi';
 
@@ -69,5 +69,20 @@ export function useFiles(opts = {}, refreshKey = 0, recentDownloads = false) {
 
   const clearSelection = useCallback(() => setSelectedIds(new Set()), []);
 
-  return { files, isLoading, error, refresh: load, handleDownload, selectedIds, toggleSelect, downloadSelected, clearSelection };
+  const handleDelete = useCallback(async (file) => {
+    if (!window.confirm(`"${file.file_name}"을(를) 삭제하시겠습니까?`)) return;
+    await deleteFile(file.id, file.storage_path);
+    setFiles((prev) => prev.filter((f) => f.id !== file.id));
+  }, []);
+
+  const deleteSelected = useCallback(async () => {
+    if (selectedIds.size === 0) return;
+    if (!window.confirm(`선택한 ${selectedIds.size}개 파일을 삭제하시겠습니까?`)) return;
+    const targets = files.filter((f) => selectedIds.has(f.id));
+    await Promise.allSettled(targets.map((f) => deleteFile(f.id, f.storage_path)));
+    setFiles((prev) => prev.filter((f) => !selectedIds.has(f.id)));
+    setSelectedIds(new Set());
+  }, [files, selectedIds]);
+
+  return { files, isLoading, error, refresh: load, handleDownload, handleDelete, selectedIds, toggleSelect, downloadSelected, deleteSelected, clearSelection };
 }

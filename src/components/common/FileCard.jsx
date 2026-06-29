@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
-import { Download } from '@mui/icons-material';
+import { Download, DeleteOutlined } from '@mui/icons-material';
 import FileTypeIcon from './FileTypeIcon';
 import { formatBytes, formatDate } from '../../utils/fileUtils';
 
@@ -18,11 +18,12 @@ import { formatBytes, formatDate } from '../../utils/fileUtils';
  * @param {boolean} isSelected - 선택 여부 [Optional, 기본값: false]
  * @param {function} onSelect - 체크박스 선택 핸들러 [Optional]
  * @param {function} onDownload - 다운로드 핸들러 [Optional]
+ * @param {function} onDelete - 삭제 핸들러 [Optional]
  *
  * Example usage:
- * <FileCard file={file} onDownload={handleDownload} />
+ * <FileCard file={file} onDownload={handleDownload} onDelete={handleDelete} />
  */
-function FileCard({ file, isSelected = false, onSelect, onDownload }) {
+function FileCard({ file, isSelected = false, onSelect, onDownload, onDelete }) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -54,8 +55,8 @@ function FileCard({ file, isSelected = false, onSelect, onDownload }) {
         />
       </Box>
 
-      {/* 다운로드 버튼 */}
-      <Box sx={{ position: 'absolute', top: 6, right: 6, zIndex: 1, opacity: hovered ? 1 : 0, transition: 'opacity 0.15s' }}>
+      {/* 다운로드 / 삭제 버튼 */}
+      <Box sx={{ position: 'absolute', top: 6, right: 6, zIndex: 1, opacity: hovered ? 1 : 0, transition: 'opacity 0.15s', display: 'flex', gap: 0.5 }}>
         <Tooltip title='다운로드'>
           <IconButton
             size='small'
@@ -63,6 +64,15 @@ function FileCard({ file, isSelected = false, onSelect, onDownload }) {
             sx={{ bgcolor: '#FFFFFF', boxShadow: '0 1px 4px rgba(0,0,0,0.12)', '&:hover': { bgcolor: '#EFF6FF' } }}
           >
             <Download sx={{ fontSize: 16, color: '#2563EB' }} />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title='삭제'>
+          <IconButton
+            size='small'
+            onClick={() => onDelete?.(file)}
+            sx={{ bgcolor: '#FFFFFF', boxShadow: '0 1px 4px rgba(0,0,0,0.12)', '&:hover': { bgcolor: '#FEF2F2' } }}
+          >
+            <DeleteOutlined sx={{ fontSize: 16, color: '#EF4444' }} />
           </IconButton>
         </Tooltip>
       </Box>

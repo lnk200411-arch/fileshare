@@ -9,7 +9,7 @@ function PopularPage({ searchQuery = '', refreshKey = 0 }) {
   const [viewMode, setViewMode] = useState('list');
   const [filterType, setFilterType] = useState('all');
 
-  const { files, isLoading, error, handleDownload, selectedIds, toggleSelect, downloadSelected } = useFiles(
+  const { files, isLoading, error, handleDownload, handleDelete, selectedIds, toggleSelect, downloadSelected, deleteSelected } = useFiles(
     { sortBy: 'download_count', ascending: false, search: searchQuery, filterType },
     refreshKey
   );
@@ -27,8 +27,10 @@ function PopularPage({ searchQuery = '', refreshKey = 0 }) {
       onViewModeChange={setViewMode}
       onFilterChange={setFilterType}
       onDownload={handleDownload}
+      onDelete={handleDelete}
       onSelect={toggleSelect}
       onDownloadSelected={downloadSelected}
+      onDeleteSelected={deleteSelected}
     />
   );
 }

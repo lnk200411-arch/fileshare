@@ -5,7 +5,7 @@ import IconButton from '@mui/material/IconButton';
 import Checkbox from '@mui/material/Checkbox';
 import Tooltip from '@mui/material/Tooltip';
 import Chip from '@mui/material/Chip';
-import { Download } from '@mui/icons-material';
+import { Download, DeleteOutlined } from '@mui/icons-material';
 import FileTypeIcon from './FileTypeIcon';
 import { formatBytes, formatDate } from '../../utils/fileUtils';
 
@@ -17,11 +17,12 @@ import { formatBytes, formatDate } from '../../utils/fileUtils';
  * @param {boolean} isSelected - 선택 여부 [Optional, 기본값: false]
  * @param {function} onSelect - 체크박스 선택 핸들러 [Optional]
  * @param {function} onDownload - 다운로드 핸들러 [Optional]
+ * @param {function} onDelete - 삭제 핸들러 [Optional]
  *
  * Example usage:
- * <FileListItem file={file} onDownload={handleDownload} />
+ * <FileListItem file={file} onDownload={handleDownload} onDelete={handleDelete} />
  */
-function FileListItem({ file, isSelected = false, onSelect, onDownload }) {
+function FileListItem({ file, isSelected = false, onSelect, onDownload, onDelete }) {
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -91,6 +92,17 @@ function FileListItem({ file, isSelected = false, onSelect, onDownload }) {
           sx={{ opacity: hovered ? 1 : 0.4, transition: 'opacity 0.15s', color: '#2563EB' }}
         >
           <Download sx={{ fontSize: 18 }} />
+        </IconButton>
+      </Tooltip>
+
+      {/* 삭제 버튼 */}
+      <Tooltip title='삭제'>
+        <IconButton
+          size='small'
+          onClick={() => onDelete?.(file)}
+          sx={{ opacity: hovered ? 1 : 0.4, transition: 'opacity 0.15s', color: '#EF4444' }}
+        >
+          <DeleteOutlined sx={{ fontSize: 18 }} />
         </IconButton>
       </Tooltip>
     </Box>

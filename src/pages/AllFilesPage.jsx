@@ -18,7 +18,7 @@ function AllFilesPage({ searchQuery = '', refreshKey = 0, onUploadSuccess }) {
     onUploadSuccess?.();
   };
 
-  const { files, isLoading, error, handleDownload, selectedIds, toggleSelect, downloadSelected } = useFiles(
+  const { files, isLoading, error, handleDownload, handleDelete, selectedIds, toggleSelect, downloadSelected, deleteSelected } = useFiles(
     { sortBy, search: searchQuery, filterType },
     refreshKey + internalRefresh
   );
@@ -37,8 +37,10 @@ function AllFilesPage({ searchQuery = '', refreshKey = 0, onUploadSuccess }) {
       onSortChange={setSortBy}
       onFilterChange={setFilterType}
       onDownload={handleDownload}
+      onDelete={handleDelete}
       onSelect={toggleSelect}
       onDownloadSelected={downloadSelected}
+      onDeleteSelected={deleteSelected}
       topSlot={<HeroUpload onSuccess={handleUploadSuccess} />}
     />
   );
