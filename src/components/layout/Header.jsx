@@ -70,8 +70,8 @@ function Header({ onSearch, searchQuery = '' }) {
             sx={{ display: 'flex', alignItems: 'center', gap: 0.75, textDecoration: 'none', flexShrink: 0 }}
           >
             <FolderIcon sx={{ color: 'primary.main', fontSize: 20 }} />
-            <Typography sx={{ fontSize: '1rem', fontWeight: 700, color: '#0F172A' }}>
-              FileShare
+            <Typography sx={{ fontSize: '30px', fontWeight: 700, color: '#0F172A' }}>
+              NK_FILEShare
             </Typography>
           </Box>
 
