@@ -36,7 +36,8 @@ export function uploadFile(file, storagePath, onProgress) {
     xhr.addEventListener('error', () => reject(new Error('네트워크 오류로 업로드 실패')));
     xhr.addEventListener('abort', () => reject(new Error('업로드가 취소되었습니다')));
 
-    xhr.open('POST', `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${storagePath}`);
+    const encodedPath = storagePath.split('/').map(encodeURIComponent).join('/');
+    xhr.open('POST', `${SUPABASE_URL}/storage/v1/object/${BUCKET}/${encodedPath}`);
     xhr.setRequestHeader('Authorization', `Bearer ${SUPABASE_KEY}`);
     xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
     xhr.setRequestHeader('x-upsert', 'false');

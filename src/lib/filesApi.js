@@ -56,7 +56,7 @@ export async function fetchRecentDownloads(limit = 50) {
  */
 export async function createFile(file, folderId = null, onProgress) {
   const ext = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
-  const uniqueName = `${crypto.randomUUID()}_${file.name}`;
+  const uniqueName = ext ? `${crypto.randomUUID()}.${ext}` : crypto.randomUUID();
   const storagePath = folderId ? `${folderId}/${uniqueName}` : `root/${uniqueName}`;
 
   const { path } = await uploadFile(file, storagePath, onProgress);
