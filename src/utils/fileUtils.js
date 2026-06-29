@@ -44,31 +44,16 @@ export function getExtension(fileName) {
   return parts.length > 1 ? parts.pop().toLowerCase() : '';
 }
 
-/** 파일을 브라우저에서 직접 다운로드 트리거 (크로스 오리진 대응: blob fetch) */
-export async function triggerDownload(url, filename) {
-  try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const blob = await res.blob();
-    const objectUrl = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = objectUrl;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(objectUrl);
-  } catch {
-    // fetch 실패 시 직접 링크 방식으로 폴백
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  }
+/** Blob으로 파일 다운로드 트리거 */
+export function triggerBlobDownload(blob, filename) {
+  const objectUrl = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = objectUrl;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(objectUrl);
 }
 
 /** Supabase Storage public URL 생성 */

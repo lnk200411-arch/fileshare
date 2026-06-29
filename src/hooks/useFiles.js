@@ -1,8 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { fetchFiles, fetchRecentDownloads, recordDownload } from '../lib/filesApi';
-import { getStoragePublicUrl, triggerDownload, getFileType } from '../utils/fileUtils';
-
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
+import { triggerBlobDownload, getFileType } from '../utils/fileUtils';
+import { downloadFileAsBlob } from '../lib/storageApi';
 
 /**
  * useFiles 훅 - 파일 목록 조회, 다운로드, 다중선택
@@ -46,8 +45,8 @@ export function useFiles(opts = {}, refreshKey = 0, recentDownloads = false) {
   useEffect(() => { load(); }, [load]);
 
   const handleDownload = useCallback(async (file) => {
-    const url = getStoragePublicUrl(SUPABASE_URL, file.storage_path);
-    await triggerDownload(url, file.file_name);
+    const blob = await downloadFileAsBlob(file.storage_path);
+    triggerBlobDownload(blob, file.file_name);
     await recordDownload(file.id).catch(() => {});
     setFiles((prev) =>
       prev.map((f) => f.id === file.id ? { ...f, download_count: (f.download_count || 0) + 1 } : f)
