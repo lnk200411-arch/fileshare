@@ -48,12 +48,13 @@ export function getPublicUrl(storagePath) {
 }
 
 /**
- * Storage에서 파일을 Blob으로 다운로드합니다.
+ * Public URL을 fetch해서 Blob으로 반환합니다.
  * @param {string} storagePath
  * @returns {Promise<Blob>}
  */
 export async function downloadFileAsBlob(storagePath) {
-  const { data, error } = await supabase.storage.from(BUCKET).download(storagePath);
-  if (error) throw error;
-  return data;
+  const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(storagePath);
+  const res = await fetch(urlData.publicUrl);
+  if (!res.ok) throw new Error(`다운로드 실패: HTTP ${res.status}`);
+  return await res.blob();
 }
