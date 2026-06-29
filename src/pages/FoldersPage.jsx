@@ -34,7 +34,7 @@ function FoldersPage({ refreshKey = 0 }) {
   const [internalRefresh, setInternalRefresh] = useState(0);
   const [viewMode, setViewMode] = useState('grid');
 
-  const { files, isLoading: filesLoading, error: filesError, handleDownload, handleDelete, selectedIds, toggleSelect, downloadSelected, deleteSelected } = useFiles(
+  const { files, isLoading: filesLoading, error: filesError, handleDownload, handleDelete, selectedIds, toggleSelect, selectAll, downloadSelected, deleteSelected } = useFiles(
     { folderId: currentFolderId },
     refreshKey + internalRefresh
   );
@@ -175,6 +175,7 @@ function FoldersPage({ refreshKey = 0 }) {
         onDownload={handleDownload}
         onDelete={handleDelete}
         onSelect={toggleSelect}
+        onSelectAll={selectAll}
         onDownloadSelected={downloadSelected}
         onDeleteSelected={deleteSelected}
         topSlot={

@@ -9,7 +9,7 @@ function RecentUploadPage({ searchQuery = '', refreshKey = 0 }) {
   const [viewMode, setViewMode] = useState('grid');
   const [filterType, setFilterType] = useState('all');
 
-  const { files, isLoading, error, handleDownload, handleDelete, selectedIds, toggleSelect, downloadSelected, deleteSelected } = useFiles(
+  const { files, isLoading, error, handleDownload, handleDelete, selectedIds, toggleSelect, selectAll, downloadSelected, deleteSelected } = useFiles(
     { sortBy: 'created_at', ascending: false, search: searchQuery, filterType },
     refreshKey
   );
@@ -29,6 +29,7 @@ function RecentUploadPage({ searchQuery = '', refreshKey = 0 }) {
       onDownload={handleDownload}
       onDelete={handleDelete}
       onSelect={toggleSelect}
+      onSelectAll={selectAll}
       onDownloadSelected={downloadSelected}
       onDeleteSelected={deleteSelected}
     />

@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
 import Skeleton from '@mui/material/Skeleton';
 import Alert from '@mui/material/Alert';
 import Grid from '@mui/material/Grid';
@@ -29,6 +30,7 @@ import FileListItem from './FileListItem';
  * @param {function} onDownloadSelected - 선택 다운로드 [Optional]
  * @param {function} onDelete - 단일 삭제 핸들러 [Optional]
  * @param {function} onDeleteSelected - 선택 삭제 핸들러 [Optional]
+ * @param {function} onSelectAll - 전체선택/해제 핸들러 (checked: boolean) [Optional]
  * @param {React.ReactNode} topSlot - 상단 슬롯 (히어로 업로드 등) [Optional]
  *
  * Example usage:
@@ -51,8 +53,11 @@ function FilePageLayout({
   onDownloadSelected,
   onDelete,
   onDeleteSelected,
+  onSelectAll,
   topSlot,
 }) {
+  const allSelected = files.length > 0 && selectedIds.size === files.length;
+  const someSelected = selectedIds.size > 0 && selectedIds.size < files.length;
   return (
     <Box sx={{ maxWidth: 1280, mx: 'auto', px: { xs: 2, md: 3 }, py: 3 }}>
       {/* 페이지 제목 */}
@@ -141,7 +146,13 @@ function FilePageLayout({
         <Box sx={{ bgcolor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px', overflow: 'hidden' }}>
           {/* 헤더 */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, px: 2, py: 1, bgcolor: '#F8FAFC', borderBottom: '1px solid #E2E8F0' }}>
-            <Box sx={{ width: 28 }} />
+            <Checkbox
+              size='small'
+              checked={allSelected}
+              indeterminate={someSelected}
+              onChange={(e) => onSelectAll?.(e.target.checked)}
+              sx={{ p: 0.25 }}
+            />
             <Box sx={{ width: 36 }} />
             <Typography sx={{ flex: 1, fontSize: '0.75rem', fontWeight: 600, color: '#64748B' }}>파일명</Typography>
             <Typography sx={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B', width: 60, display: { xs: 'none', sm: 'block' } }}>형식</Typography>

@@ -69,6 +69,10 @@ export function useFiles(opts = {}, refreshKey = 0, recentDownloads = false) {
 
   const clearSelection = useCallback(() => setSelectedIds(new Set()), []);
 
+  const selectAll = useCallback((checked) => {
+    setSelectedIds(checked ? new Set(files.map((f) => f.id)) : new Set());
+  }, [files]);
+
   const handleDelete = useCallback(async (file) => {
     if (!window.confirm(`"${file.file_name}"을(를) 삭제하시겠습니까?`)) return;
     await deleteFile(file.id, file.storage_path);
@@ -84,5 +88,5 @@ export function useFiles(opts = {}, refreshKey = 0, recentDownloads = false) {
     setSelectedIds(new Set());
   }, [files, selectedIds]);
 
-  return { files, isLoading, error, refresh: load, handleDownload, handleDelete, selectedIds, toggleSelect, downloadSelected, deleteSelected, clearSelection };
+  return { files, isLoading, error, refresh: load, handleDownload, handleDelete, selectedIds, toggleSelect, selectAll, downloadSelected, deleteSelected, clearSelection };
 }
