@@ -15,6 +15,7 @@ export async function uploadFile(file, storagePath, onProgress) {
     .upload(storagePath, file, {
       cacheControl: '3600',
       upsert: false,
+      contentType: file.type || 'application/octet-stream',
       onUploadProgress: (e) => {
         if (onProgress && e.total) {
           onProgress(Math.round((e.loaded / e.total) * 100));
