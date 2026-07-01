@@ -21,6 +21,7 @@ const NAV_ITEMS = [
   { label: '인기 다운로드', path: '/popular' },
   { label: '폴더 탐색', path: '/folders' },
   { label: '최근 다운로드', path: '/recent-download' },
+  { label: '방명록', path: '/guestbook' },
 ];
 
 /**

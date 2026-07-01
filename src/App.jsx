@@ -6,6 +6,7 @@ import RecentUploadPage from './pages/RecentUploadPage';
 import PopularPage from './pages/PopularPage';
 import FoldersPage from './pages/FoldersPage';
 import RecentDownloadPage from './pages/RecentDownloadPage';
+import GuestbookPage from './pages/GuestbookPage';
 
 function App() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -34,6 +35,7 @@ function App() {
           <Route path='/popular' element={<PopularPage searchQuery={searchQuery} refreshKey={refreshKey} />} />
           <Route path='/folders' element={<FoldersPage refreshKey={refreshKey} />} />
           <Route path='/recent-download' element={<RecentDownloadPage refreshKey={refreshKey} />} />
+          <Route path='/guestbook' element={<GuestbookPage />} />
           <Route path='*' element={<Navigate to='/' replace />} />
         </Routes>
       </AppLayout>
